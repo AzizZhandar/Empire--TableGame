@@ -15,6 +15,7 @@
 		3F502A0826C8077F004E5C5F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F502A0626C8077F004E5C5F /* LaunchScreen.storyboard */; };
 		3F502A1326C80780004E5C5F /* Empire___Table_GameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F502A1226C80780004E5C5F /* Empire___Table_GameTests.swift */; };
 		3F502A1E26C80780004E5C5F /* Empire___Table_GameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F502A1D26C80780004E5C5F /* Empire___Table_GameUITests.swift */; };
+		3FB79D6426DC047A0065CA36 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB79D6326DC047A0065CA36 /* FirstViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		3F502A1926C80780004E5C5F /* Empire - Table GameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Empire - Table GameUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F502A1D26C80780004E5C5F /* Empire___Table_GameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Empire___Table_GameUITests.swift"; sourceTree = "<group>"; };
 		3F502A1F26C80780004E5C5F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3FB79D6326DC047A0065CA36 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				3F5029FD26C80779004E5C5F /* SceneDelegate.swift */,
 				3F5029FF26C80779004E5C5F /* ViewController.swift */,
 				3F502A0126C80779004E5C5F /* Main.storyboard */,
+				3FB79D6326DC047A0065CA36 /* FirstViewController.swift */,
 				3F502A0426C8077F004E5C5F /* Assets.xcassets */,
 				3F502A0626C8077F004E5C5F /* LaunchScreen.storyboard */,
 				3F502A0926C8077F004E5C5F /* Info.plist */,
@@ -261,6 +264,7 @@
 				3F502A0026C80779004E5C5F /* ViewController.swift in Sources */,
 				3F5029FC26C80779004E5C5F /* AppDelegate.swift in Sources */,
 				3F5029FE26C80779004E5C5F /* SceneDelegate.swift in Sources */,
+				3FB79D6426DC047A0065CA36 /* FirstViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,11 +438,12 @@
 		3F502A2326C80780004E5C5F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = AY63UR757Z;
 				INFOPLIST_FILE = "Empire - Table Game/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -446,18 +451,19 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "AzizZhandar.Empire---Table-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		3F502A2426C80780004E5C5F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = AY63UR757Z;
 				INFOPLIST_FILE = "Empire - Table Game/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -465,7 +471,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "AzizZhandar.Empire---Table-Game";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
