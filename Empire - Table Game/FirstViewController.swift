@@ -13,10 +13,9 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var playersCount: UITextField!
     @IBOutlet weak var playingTheme: UITextField!
     
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         playersCount.delegate = self
         playingTheme.delegate = self
         
@@ -45,20 +44,13 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
         if playingTheme.text!.isEmpty || playersCount.text!.isEmpty {
             customAlert.showAlert(with: "Ошибка", message: "Чтобы пройти дальше, нужно заполнить параметры: \n1) количество игроков; \n2) тематику игры", on: self)
         } else {
-            let rootVC = SecondViewController()
+            let rootVC = SecondViewController(playerNumber, players: playersCount.text!, theme: playingTheme.text!)
             let navVC = UINavigationController(rootViewController: rootVC)
             navVC.modalPresentationStyle = .fullScreen
             present(navVC, animated: true)
             rootVC.theme = playingTheme.text!
             rootVC.players = playersCount.text!
         }
-        
-        
-        
-
-//        let destinationViewController = self.storyboard?.instantiateViewController(identifier: "SecondViewController") as! SecondViewController
-//        destinationViewController.a = playingTheme.text!
-//        self.navigationController?.pushViewController(destinationViewController, animated: true)
     }
     
     @objc func dismissAlert() {
@@ -180,6 +172,8 @@ class myAlert {
 
 // MARK: - Second View Controller Class
 
+var playerNumber = 1
+
 class SecondViewController: UIViewController, UITextFieldDelegate {
 
     var theme = String()
@@ -190,7 +184,18 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
     let label = UILabel()
     let textField = UITextField()
     let button = UIButton()
-
+    
+    init(_ playerNumber: Int, players: String, theme: String) {
+        self.playerNumber = playerNumber
+        self.players = players
+        self.theme = theme
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -209,12 +214,12 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func didTapButton2() {
         if playerNumber < Int(players)! {
-            playerNumber = playerNumber + 1
-            let rootVC = SecondViewController()
+            let rootVC = SecondViewController(playerNumber, players: players, theme: theme)
             let navVC = UINavigationController(rootViewController: rootVC)
             navVC.modalPresentationStyle = .fullScreen
             present(navVC, animated: true)
-    
+            playerNumber = playerNumber + 1
+
 //            playerNumber = playerNumber + 1
         }
     }
@@ -240,7 +245,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
             label.textColor = .white
             label.textAlignment = .center
             label.font = .boldSystemFont(ofSize: 20)
-//            playerNumber += 1
+            playerNumber += 1
             
             textField.translatesAutoresizingMaskIntoConstraints = false
             textField.borderStyle = .roundedRect
@@ -297,4 +302,5 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
 // MARK: - Notes
 /*
    - Нужно прописать как будут создаваться несколько одинаковых вьюшек (с изменениями лишь в label-е и чтобы когда был последний индекс players.count появилась новая кнопка (Готово)
- */
+  - Функционал кнопки Готово - чтобы прописывалась функция из ViewController.swift с диктовкой всех передаваемых слов
+*/
