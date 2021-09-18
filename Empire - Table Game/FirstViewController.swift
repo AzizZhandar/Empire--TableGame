@@ -384,7 +384,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
 /*
   - Функционал кнопки Готово - чтобы прописывалась функция из ViewController.swift с диктовкой всех передаваемых слов (возможно для этого стоит создать глобальную переменную чтобы передавались значения переменной textfield)
   - Нужно создать UIAlertController и прописать внутри pageViewController - для того чтобы прописывалась инстраукция игры в buttonSF
-  - Прописать анимированный LaunchScreen
+  - Прописать анимированный LaunchScreen.storyboard
 */
 // MARK: - Third View Controller
 
