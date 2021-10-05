@@ -19,19 +19,19 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
             
-        playersCount.delegate = self
-        playingTheme.delegate = self
+        playersCount?.delegate = self
+        playingTheme?.delegate = self
         
-        playersCount.keyboardType = .numberPad
-        playersCount.clearButtonMode = .always
-        playingTheme.clearButtonMode = .always
+        playersCount?.keyboardType = .numberPad
+        playersCount?.clearButtonMode = .always
+        playingTheme?.clearButtonMode = .always
         
         buttonStyle()
         buttonLayout()
         
-        goButton.layer.cornerRadius = 15
-        goButton.layer.borderWidth = 0.5
-        goButton.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
+        goButton?.layer.cornerRadius = 15
+        goButton?.layer.borderWidth = 0.5
+        goButton?.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
         
         buttonSFRule.addTarget(self, action: #selector(buttonSF), for: .touchUpInside)
         
@@ -97,10 +97,19 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-// Button where would be rules of game
+// MARK:- Button where would be rules of game
     
     @objc func buttonSF() {
 
+//        let EY = InstructionsViewController()
+//        EY.showAlert(image: "FirstScreenShot", on: self)
+        
+        let PVC = RulesViewController()
+//        PVC.modalTransitionStyle = .crossDissolve
+        present(PVC, animated: true, completion: nil)
+        PVC.modalPresentationStyle = .fullScreen
+
+        
 //        let insController = UIAlertController(title: "Instructions", message: "", preferredStyle: .alert)
 //        let actionDone = UIAlertAction(title: "OK", style: .cancel, handler: { (action:UIAlertAction) in
 //
@@ -233,6 +242,7 @@ class myAlertFVC {
 // MARK: - Second View Controller Class
 
 var playerNumber = 1
+var playerText: String  = ""
 
 class SecondViewController: UIViewController, UITextFieldDelegate {
     
@@ -280,7 +290,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.button.alpha = 1.0
         }
-        if  textField.text!.isEmpty {
+        if textField.text!.isEmpty {
             
             alert.showAlert(with: "Так не выйдет", message: "Чтобы продолжить, введите слово", on: self)
 
@@ -305,17 +315,19 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+    
 /*    @IBAction func tapButton(_ sender: UIButton){
         
     }
 */
     
 }
-    extension SecondViewController {
-
+extension SecondViewController {
+    
         func style() {
+            
             backgroundView.translatesAutoresizingMaskIntoConstraints = false
-            backgroundView.image = UIImage(named: "waves")
+            backgroundView.image = UIImage(named: "Circle_Scatter")
             backgroundView.contentMode = .scaleAspectFill
             
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -323,7 +335,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
 //            label.backgroundColor = .systemFill
 //            label.layer.shadowColor = UIColor.orange.cgColor
             label.numberOfLines = 0
-            label.textColor = .white
+            label.textColor = getUIColor(hex: "#141E61")
             label.textAlignment = .center
             label.font = .boldSystemFont(ofSize: 20)
             playerNumber += 1
@@ -380,6 +392,30 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+extension SecondViewController {
+    
+    func getUIColor(hex: String, alpha: Double = 1.0) -> UIColor? {
+        var cleanString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if (cleanString.hasPrefix("#")) {
+            cleanString.remove(at: cleanString.startIndex)
+        }
+
+        if ((cleanString.count) != 6) {
+            return nil
+        }
+
+        var rgbValue: UInt32 = 0
+        Scanner(string: cleanString).scanHexInt32(&rgbValue)
+
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+}
 // MARK: - Notes - TO DO LIST
 /*
   - Функционал кнопки Готово - чтобы прописывалась функция из ViewController.swift с диктовкой всех передаваемых слов (возможно для этого стоит создать глобальную переменную чтобы передавались значения переменной textfield)
@@ -388,17 +424,21 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
 */
 // MARK: - Third View Controller
 
+
+
 class ThirdViewController: UIViewController, UITextFieldDelegate {
 
+//    static let shared = ThirdViewController(coder: nil)
+    
     var theme = String()
     var players = String()
     var playerNumber = 1
-
+    
     let backgroundView = UIImageView()
     let label = UILabel()
     let textField = UITextField()
     let buttonLast = UIButton()
-
+    
     init(_ playerNumberLast: Int, playersLast: String, themeLast: String) {
         self.playerNumber = playerNumberLast
         self.players = playersLast
@@ -434,9 +474,11 @@ class ThirdViewController: UIViewController, UITextFieldDelegate {
             self.buttonLast.alpha = 1.0
         }
         
+        let str = "\(textField.text)"
+        
         let utterance = AVSpeechUtterance(string: textField.text ?? "Nothing")
         utterance.voice = AVSpeechSynthesisVoice(language: "ru-RU")
-        utterance.rate = 0.3
+        utterance.rate = 0.2
         
         let synthesis = AVSpeechSynthesizer()
         synthesis.speak(utterance)
@@ -452,10 +494,32 @@ class ThirdViewController: UIViewController, UITextFieldDelegate {
 
 extension ThirdViewController {
     
+    func getUIColor(hex: String, alpha: Double = 1.0) -> UIColor? {
+        var cleanString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+
+        if (cleanString.hasPrefix("#")) {
+            cleanString.remove(at: cleanString.startIndex)
+        }
+
+        if ((cleanString.count) != 6) {
+            return nil
+        }
+
+        var rgbValue: UInt32 = 0
+        Scanner(string: cleanString).scanHexInt32(&rgbValue)
+
+        return UIColor(
+            red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+            green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+            blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+            alpha: CGFloat(1.0)
+        )
+    }
+    
     func styleLast() {
         
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.image = UIImage(named: "waves")
+        backgroundView.image = UIImage(named: "Circle_Scatter")
         backgroundView.contentMode = .scaleAspectFill
 
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -463,7 +527,7 @@ extension ThirdViewController {
 //            label.backgroundColor = .systemFill
 //            label.layer.shadowColor = UIColor.orange.cgColor
         label.numberOfLines = 0
-        label.textColor = .white
+        label.textColor = getUIColor(hex: "#141E61")
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 20)
 //        playerNumber += 1
