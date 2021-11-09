@@ -18,7 +18,7 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
         
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+
         playersCount?.delegate = self
         playingTheme?.delegate = self
         
@@ -392,6 +392,7 @@ extension SecondViewController {
         }
     }
 
+
 extension SecondViewController {
     
     func getUIColor(hex: String, alpha: Double = 1.0) -> UIColor? {
@@ -434,6 +435,8 @@ class ThirdViewController: UIViewController, UITextFieldDelegate {
     var players = String()
     var playerNumber = 1
     
+    var valueOfTextField: SecondViewController!
+    
     let backgroundView = UIImageView()
     let label = UILabel()
     let textField = UITextField()
@@ -474,9 +477,15 @@ class ThirdViewController: UIViewController, UITextFieldDelegate {
             self.buttonLast.alpha = 1.0
         }
         
+        var valueTF = valueOfTextField.textField.text {
+            didSet {
+                valueOfTextField.textField.text = valueTF
+            }
+        }
+        
         let str = "\(textField.text)"
         
-        let utterance = AVSpeechUtterance(string: textField.text ?? "Nothing")
+        let utterance = AVSpeechUtterance(string: valueTF ?? "Nothing")
         utterance.voice = AVSpeechSynthesisVoice(language: "ru-RU")
         utterance.rate = 0.2
         
