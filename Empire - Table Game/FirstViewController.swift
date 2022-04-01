@@ -10,36 +10,99 @@ import AVFoundation
 
 class FirstViewController: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var goButton: UIButton!
-    @IBOutlet weak var playersCount: UITextField!
-    @IBOutlet weak var playingTheme: UITextField!
-    
+    let backgroundView = UIImageView()
+    let welcomingLabel = UILabel()
+    let inGameLabel = UILabel()
+    let empireLabel = UILabel()
+    let descriptionLabel = UILabel()
+    let playersCount = UITextField()
+    let playingTheme = UITextField()
+    let goButton = UIButton()
+
     let buttonSFRule = UIButton()
-        
+
+    var player: AVAudioPlayer?
+    var playerMinimum = 5
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        playersCount?.delegate = self
-        playingTheme?.delegate = self
-        
-        playersCount?.keyboardType = .numberPad
-        playersCount?.clearButtonMode = .always
-        playingTheme?.clearButtonMode = .always
-        
+        playersCount.delegate = self
+        playingTheme.delegate = self
+
+        playersCount.keyboardType = .numberPad
+        playersCount.clearButtonMode = .always
+        playingTheme.clearButtonMode = .always
+
         buttonStyle()
         buttonLayout()
-        
-        goButton?.layer.cornerRadius = 15
-        goButton?.layer.borderWidth = 0.5
-        goButton?.addTarget(self, action: #selector(didTapButton), for: .touchUpInside)
-        
+
+        goButton.layer.cornerRadius = 15
+        goButton.layer.borderWidth = 0.5
+        goButton.addTarget(self, action: #selector(goButtonTapped), for: .touchUpInside)
+
         buttonSFRule.addTarget(self, action: #selector(buttonSF), for: .touchUpInside)
-        
+
     }
-    
+
 // make a button with SF Symbol which will identify rule of game through smth
 
     func buttonStyle() {
+
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        welcomingLabel.translatesAutoresizingMaskIntoConstraints = false
+        inGameLabel.translatesAutoresizingMaskIntoConstraints = false
+        empireLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        playersCount.translatesAutoresizingMaskIntoConstraints = false
+        playingTheme.translatesAutoresizingMaskIntoConstraints = false
+        goButton.translatesAutoresizingMaskIntoConstraints = false
+        buttonSFRule.translatesAutoresizingMaskIntoConstraints = false
+
+        backgroundView.image = UIImage(named: "wave-haikei-7")
+        backgroundView.contentMode = .scaleToFill
+
+        welcomingLabel.text = "Добро пожаловать"
+        welcomingLabel.numberOfLines = 0
+        welcomingLabel.textColor = .link
+//        welcomingLabel.textAlignment = .left
+        welcomingLabel.font = UIFont(name: "Avenir Heavy", size: 28)
+
+        inGameLabel.text = "в игру"
+        inGameLabel.numberOfLines = 0
+        inGameLabel.textColor = .link
+//        inGameLabel.textAlignment = .left
+        inGameLabel.font = UIFont(name: "Avenir Heavy", size: 28)
+
+        empireLabel.text = "Empire"
+        empireLabel.numberOfLines = 0
+        empireLabel.textColor = .black
+//        empireLabel.textAlignment = .left
+        empireLabel.font = UIFont(name: "Avenir Heavy", size: 28)
+        
+        descriptionLabel.text = "Чтобы начать играть, укажите количество игроков, а также тематику игры:"
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.textColor = .gray
+        descriptionLabel.font = UIFont(name: "Avenir Heavy", size: 20)
+        
+        playersCount.borderStyle = .roundedRect
+        playersCount.placeholder = "введите количество игроков"
+        playersCount.clearButtonMode = .always
+        playersCount.font = UIFont(name: "Avenir Heavy", size: 14)
+        playersCount.alpha = 0.8882
+        
+        playingTheme.borderStyle = .roundedRect
+        playingTheme.placeholder = "введите тему игры"
+        playingTheme.clearButtonMode = .always
+        playingTheme.font = UIFont(name: "Avenir Heavy", size: 14)
+        playingTheme.alpha = 0.8882
+
+        goButton.backgroundColor = .link
+        goButton.layer.cornerRadius = 15
+        goButton.layer.borderWidth = 0.5
+        goButton.setTitle("Перейти", for: .normal)
+        goButton.titleLabel?.font = UIFont(name: "Avenir Heavy", size: 16)
+    
         
         let largeConfig = UIImage.SymbolConfiguration(
             pointSize: 140,
@@ -51,17 +114,67 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
             withConfiguration: largeConfig)
         
         buttonSFRule.setImage(largeBoldDoc, for: .normal)
-        buttonSFRule.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func buttonLayout() {
         
+        view.addSubview(backgroundView)
+        view.addSubview(welcomingLabel)
+        view.addSubview(inGameLabel)
+        view.addSubview(empireLabel)
+        view.addSubview(descriptionLabel)
+        view.addSubview(playersCount)
+        view.addSubview(playingTheme)
         view.addSubview(buttonSFRule)
+        view.addSubview(goButton)
 
         NSLayoutConstraint.activate([
-                                        
-            buttonSFRule.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalToSystemSpacingAfter: buttonSFRule.trailingAnchor, multiplier: 2),
+            
+            backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+//            welcomingLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
+            welcomingLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            welcomingLabel.bottomAnchor.constraint(equalTo: inGameLabel.topAnchor, constant: -10),
+            
+            inGameLabel.topAnchor.constraint(equalToSystemSpacingBelow: welcomingLabel.bottomAnchor, multiplier: 6),
+            inGameLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -20),
+            inGameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+//            inGameLabel.trailingAnchor.constraint(equalToSystemSpacingAfter: empireLabel.leadingAnchor, multiplier: -20),
+            
+//            empireLabel.topAnchor.constraint(equalToSystemSpacingBelow: welcomingLabel.bottomAnchor, multiplier: 0),
+            empireLabel.bottomAnchor.constraint(equalTo: descriptionLabel.topAnchor, constant: -20),
+            empireLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: inGameLabel.trailingAnchor, multiplier: 1),
+            
+            descriptionLabel.topAnchor.constraint(equalToSystemSpacingBelow: inGameLabel.bottomAnchor, multiplier: 4),
+            descriptionLabel.bottomAnchor.constraint(equalTo: playersCount.topAnchor, constant: -50),
+            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            goButton.topAnchor.constraint(equalTo: playingTheme.bottomAnchor, constant: 50),
+            goButton.heightAnchor.constraint(equalToConstant: 50),
+            goButton.widthAnchor.constraint(equalToConstant: 175),
+            
+            
+            playersCount.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            playersCount.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            playersCount.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            playersCount.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+//            playersCount.widthAnchor.constraint(equalToConstant: 350),
+            
+            playingTheme.topAnchor.constraint(equalToSystemSpacingBelow: playersCount.bottomAnchor, multiplier: 2),
+            playingTheme.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            playingTheme.widthAnchor.constraint(equalToConstant: 350),
+            playingTheme.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            playingTheme.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
+            
+//            buttonSFRule.leadingAnchor.constraint(equalTo: welcomingLabel.trailingAnchor, constant: 10),
+            buttonSFRule.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
+            buttonSFRule.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             buttonSFRule.heightAnchor.constraint(equalToConstant: 40),
             buttonSFRule.widthAnchor.constraint(equalToConstant: 40)
         
@@ -78,15 +191,17 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    let customAlert = myAlertFVC()
+    let customAlert = AlertForTheFirstViewController()
     
-    @objc private func didTapButton() {
+    @objc private func goButtonTapped(sender: UIButton) {
+        
         goButton.alpha = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.goButton.alpha = 1.0
         }
-        if playingTheme.text!.isEmpty || playersCount.text!.isEmpty {
-            customAlert.showAlert(with: "Ошибка", message: "Чтобы пройти дальше, нужно заполнить параметры: \n1) количество игроков; \n2) тематику игры", on: self)
+        
+        if playingTheme.text!.isEmpty || playersCount.text!.isEmpty || playersCount.text! < String(playerMinimum) {
+            customAlert.showAlert(with: "Ошибка", message: "Чтобы пройти дальше, нужно заполнить параметры: \n1) количество игроков (минимум 5); \n2) тематику игры", on: self)
         } else {
             let rootVC = SecondViewController(playerNumber, players: playersCount.text!, theme: playingTheme.text!)
             let navVC = UINavigationController(rootViewController: rootVC)
@@ -97,27 +212,17 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    let alertGif = AlertForTheRulesViewController()
+
 // MARK:- Button where would be rules of game
     
     @objc func buttonSF() {
-
-//        let EY = InstructionsViewController()
-//        EY.showAlert(image: "FirstScreenShot", on: self)
         
-        let PVC = RulesViewController()
-//        PVC.modalTransitionStyle = .crossDissolve
-        present(PVC, animated: true, completion: nil)
-        PVC.modalPresentationStyle = .fullScreen
-
+//        let url = Bundle.main.url(forResource: "bensound-ukulele", withExtension: "mp3")
+//        player = try! AVAudioPlayer(contentsOf: url!)
+//        player?.play()
         
-//        let insController = UIAlertController(title: "Instructions", message: "", preferredStyle: .alert)
-//        let actionDone = UIAlertAction(title: "OK", style: .cancel, handler: { (action:UIAlertAction) in
-//
-//        })
-//
-//        let pageViewController: UIPageViewController
-//        pageViewController.preferredContentSize.height = 180
-//        insController.setValue(pageViewController, forKey: "contentViewController")
+        alertGif.showAlert(with: "gifgif", on: self)
         
     }
     
@@ -126,123 +231,11 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
     }
 }
 
-//MARK: - Alert Class for FirstViewController
-
-class myAlertFVC {
-    
-    struct Constants {
-        static let backgroundAlphaTo: CGFloat = 0.6
-    }
-    
-    private let backgroundView: UIView = {
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .black
-        backgroundView.alpha = 0
-        return backgroundView
-    }()
-    
-    private let alertView: UIView = {
-        let alert = UIView()
-        alert.backgroundColor = .white
-        alert.layer.masksToBounds = true
-        alert.layer.cornerRadius = 12
-        return alert
-    }()
-    
-    private var mytargetView: UIView?
-    
-    func showAlert(with title: String,
-                   message: String,
-                   on viewController: FirstViewController) {
-        guard let targetView = viewController.view else {
-            return
-        }
-        
-        mytargetView = targetView
-        
-        backgroundView.frame = targetView.bounds
-        targetView.addSubview(backgroundView)
-        
-        targetView.addSubview(alertView)
-        alertView.frame = CGRect(x: 40,
-                                 y: -300,
-                                 width: targetView.frame.size.width-80,
-                                 height: 300)
-
-        let titleLabel = UILabel(frame: CGRect(x: 0,
-                                               y: 0,
-                                               width: alertView.frame.size.width,
-                                               height: 80))
-        titleLabel.text = title
-        titleLabel.textAlignment = .center
-        titleLabel.font = .boldSystemFont(ofSize: 17)
-        alertView.addSubview(titleLabel)
-        
-        let messageLabel = UILabel(frame: CGRect(x: 20,
-                                                 y: 70,
-                                                 width: alertView.frame.size.width-40,
-                                                 height: 170))
-        messageLabel.numberOfLines = 0
-        messageLabel.text = message
-        messageLabel.textAlignment = .center
-        alertView.addSubview(messageLabel)
-        
-        let button = UIButton(frame: CGRect(x: 0,
-                                            y: alertView.frame.size.height-60,
-                                            width: alertView.frame.size.width,
-                                            height: 50))
-        button.setTitle("Окей, понятно", for: .normal)
-        button.setTitleColor(.link, for: .normal)
-        button.addTarget(self,
-                         action: #selector(dismissAlert),
-                         for: .touchUpInside)
-        alertView.addSubview(button)
-
-        UIView.animate(withDuration: 0.25,
-                       animations: {
-                        
-                        self.backgroundView.alpha = Constants.backgroundAlphaTo
-                       }, completion: { done in
-                        if done {
-                            UIView.animate(withDuration: 0.25, animations: {
-                                self.alertView.center = targetView.center
-                            })
-                        }
-                       })
-    }
-    
-    @objc func dismissAlert() {
-        guard let targetView = mytargetView else {
-            return
-        }
-        
-        UIView.animate(withDuration: 0.25,
-                       animations: {
-                        
-                        self.alertView.frame = CGRect(x: 40,
-                                                      y: targetView.frame.size.height,
-                                                 width: targetView.frame.size.width-80,
-                                                 height: 300)
-
-                        }, completion: { done in
-                        if done {
-                            UIView.animate(withDuration: 0.25, animations: {
-                                self.backgroundView.alpha = 0
-                            }, completion: { done in
-                                if done {
-                                    self.alertView.removeFromSuperview()
-                                    self.backgroundView.removeFromSuperview()
-                                }
-                            })
-                        }
-                       })
-    }
-}
-
 // MARK: - Second View Controller Class
 
 var playerNumber = 1
 var playerText: String  = ""
+var dataArray = [String]()
 
 class SecondViewController: UIViewController, UITextFieldDelegate {
     
@@ -251,6 +244,7 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
     var theme = String()
     var players = String()
     var playerNumber = 1
+//    var dataArray = [String]()
 
     let backgroundView = UIImageView()
     let label = UILabel()
@@ -290,8 +284,9 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.button.alpha = 1.0
         }
+
         if textField.text!.isEmpty {
-            
+
             alert.showAlert(with: "Так не выйдет", message: "Чтобы продолжить, введите слово", on: self)
 
         } else if playerNumber < Int(players)! {
@@ -301,34 +296,50 @@ class SecondViewController: UIViewController, UITextFieldDelegate {
             navVC.modalPresentationStyle = .fullScreen
             present(navVC, animated: true)
             playerNumber = playerNumber + 1
-
+            
+            let entry = textField.text!
+            if !dataArray.contains(entry) {
+                dataArray.append(entry)
+                textField.text = ""
+//                dataArray.forEach { data in
+//                    print(dataArray)
+//                }
+                print(dataArray)
+            }
+            
         } else {
             
             let rootVCLast = ThirdViewController(playerNumber, playersLast: players, themeLast: theme)
             let navVCLast = UINavigationController(rootViewController: rootVCLast)
             navVCLast.modalPresentationStyle = .fullScreen
             present(navVCLast, animated: true)
+//            print(dataArray)
+
+            let entry = textField.text!
+            if !dataArray.contains(entry) {
+                dataArray.append(entry)
+                textField.text = ""
+//                dataArray.forEach { data in
+//                    print(dataArray)
+//                }
+                print(dataArray)
+            }
+
         }
     }
     
     @objc private func dismissSelf() {
         dismiss(animated: true, completion: nil)
     }
-    
-    
-/*    @IBAction func tapButton(_ sender: UIButton){
-        
-    }
-*/
-    
 }
 extension SecondViewController {
     
         func style() {
             
             backgroundView.translatesAutoresizingMaskIntoConstraints = false
-            backgroundView.image = UIImage(named: "Circle_Scatter")
+            backgroundView.image = UIImage(named: "imageBackground")
             backgroundView.contentMode = .scaleAspectFill
+            
             
             label.translatesAutoresizingMaskIntoConstraints = false
             label.text = "Игрок №\(playerNumber), введите свое слово"
@@ -338,6 +349,7 @@ extension SecondViewController {
             label.textColor = getUIColor(hex: "#141E61")
             label.textAlignment = .center
             label.font = .boldSystemFont(ofSize: 20)
+            label.font = UIFont(name: "Avenir Heavy", size: 20)
             playerNumber += 1
             
             textField.translatesAutoresizingMaskIntoConstraints = false
@@ -348,6 +360,8 @@ extension SecondViewController {
 //            textField.layer.cornerRadius = 15
 //            textField.layer.borderWidth = 0.5
             textField.clearButtonMode = .always
+            textField.font = UIFont(name: "Avenir Heavy", size: 14)
+            textField.alpha = 0.8882
 //            textField.layer.shadowColor = UIColor.orange.cgColor
             
             button.translatesAutoresizingMaskIntoConstraints = false
@@ -356,6 +370,7 @@ extension SecondViewController {
             button.layer.borderWidth = 0.5
             button.setTitle("Дальше", for: .normal)
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+            button.titleLabel?.font = UIFont(name: "Avenir Heavy", size: 17)
             
         }
         
@@ -373,24 +388,27 @@ extension SecondViewController {
                 backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
 
                 label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                label.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 30),
+//                label.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 30),
                 label.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 10),
+                label.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -40),
                 view.safeAreaLayoutGuide.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 10),
 //                label.heightAnchor.constraint(equalToConstant: 50),
                 
                 textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 textField.widthAnchor.constraint(equalToConstant: 250),
                 textField.heightAnchor.constraint(equalToConstant: 50),
-                textField.topAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 4),
+                textField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+//                textField.topAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 4),
                 
-                button.topAnchor.constraint(equalToSystemSpacingBelow: textField.bottomAnchor, multiplier: 8),
+                button.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 40),
                 button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 button.heightAnchor.constraint(equalToConstant: 50),
                 button.widthAnchor.constraint(equalToConstant: 150)
             
             ])
         }
-    }
+}
 
 
 extension SecondViewController {
@@ -417,12 +435,6 @@ extension SecondViewController {
         )
     }
 }
-// MARK: - Notes - TO DO LIST
-/*
-  - Функционал кнопки Готово - чтобы прописывалась функция из ViewController.swift с диктовкой всех передаваемых слов (возможно для этого стоит создать глобальную переменную чтобы передавались значения переменной textfield)
-  - Нужно создать UIAlertController и прописать внутри pageViewController - для того чтобы прописывалась инстраукция игры в buttonSF
-  - Прописать анимированный LaunchScreen.storyboard
-*/
 // MARK: - Third View Controller
 
 
@@ -434,9 +446,7 @@ class ThirdViewController: UIViewController, UITextFieldDelegate {
     var theme = String()
     var players = String()
     var playerNumber = 1
-    
-    var valueOfTextField: SecondViewController!
-    
+            
     let backgroundView = UIImageView()
     let label = UILabel()
     let textField = UITextField()
@@ -468,37 +478,44 @@ class ThirdViewController: UIViewController, UITextFieldDelegate {
         layoutLast()
         buttonLast.addTarget(self, action: #selector(didTapButtonLast), for: .touchUpInside)
     }
-    
+
 // Кнопка - отвечающая за проговорку всех слов, которые были переданы в textfield
     @objc private func didTapButtonLast() {
-        
+
         buttonLast.alpha = 0.5
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.buttonLast.alpha = 1.0
         }
-        
-        var valueTF = valueOfTextField.textField.text {
-            didSet {
-                valueOfTextField.textField.text = valueTF
-            }
+
+        let entry = textField.text!
+        if !dataArray.contains(entry) {
+            dataArray.append(entry)
+            textField.text = ""
+            print(dataArray)
         }
-        
-        let str = "\(textField.text)"
-        
-        let utterance = AVSpeechUtterance(string: valueTF ?? "Nothing")
+
+        dataArray.shuffle()
+
+        let str = "Тема игры - \(theme); Прописанные слова: \(dataArray)"
+
+        let utterance = AVSpeechUtterance(string: str)
         utterance.voice = AVSpeechSynthesisVoice(language: "ru-RU")
-        utterance.rate = 0.2
-        
+        utterance.rate = 0.1
+
         let synthesis = AVSpeechSynthesizer()
         synthesis.speak(utterance)
 
+        let rootVC = LastViewController(playersLastView: players, themeLastView: theme)
+        let navVC = UINavigationController(rootViewController: rootVC)
+        navVC.modalPresentationStyle = .fullScreen
+        present(navVC, animated: true)
+        
+        
     }
     
     @objc private func dismissSelfLast() {
         dismiss(animated: true, completion: nil)
     }
-
-    
 }
 
 extension ThirdViewController {
@@ -528,7 +545,7 @@ extension ThirdViewController {
     func styleLast() {
         
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.image = UIImage(named: "Circle_Scatter")
+        backgroundView.image = UIImage(named: "imageBackground")
         backgroundView.contentMode = .scaleAspectFill
 
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -539,6 +556,8 @@ extension ThirdViewController {
         label.textColor = getUIColor(hex: "#141E61")
         label.textAlignment = .center
         label.font = .boldSystemFont(ofSize: 20)
+        label.font = UIFont(name: "Avenir Heavy", size: 20)
+
 //        playerNumber += 1
         
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -549,6 +568,9 @@ extension ThirdViewController {
 //            textField.layer.cornerRadius = 15
 //            textField.layer.borderWidth = 0.5
         textField.clearButtonMode = .always
+        textField.font = UIFont(name: "Avenir Heavy", size: 14)
+        textField.alpha = 0.8882
+
 //            textField.layer.shadowColor = UIColor.orange.cgColor
         
         buttonLast.translatesAutoresizingMaskIntoConstraints = false
@@ -557,6 +579,7 @@ extension ThirdViewController {
         buttonLast.layer.borderWidth = 0.5
         buttonLast.setTitle("Готово", for: .normal)
         buttonLast.titleLabel?.font = UIFont.boldSystemFont(ofSize: 17)
+        buttonLast.titleLabel?.font = UIFont(name: "Avenir Heavy", size: 17)
 
         
     }
@@ -569,28 +592,30 @@ extension ThirdViewController {
         view.addSubview(buttonLast)
 
         NSLayoutConstraint.activate([
-                                        
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             backgroundView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 30),
+//                label.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 30),
             label.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 10),
+            label.bottomAnchor.constraint(equalTo: textField.topAnchor, constant: -40),
             view.safeAreaLayoutGuide.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 10),
 //                label.heightAnchor.constraint(equalToConstant: 50),
             
             textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             textField.widthAnchor.constraint(equalToConstant: 250),
             textField.heightAnchor.constraint(equalToConstant: 50),
-            textField.topAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 4),
+            textField.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+//                textField.topAnchor.constraint(equalToSystemSpacingBelow: label.bottomAnchor, multiplier: 4),
             
-            buttonLast.topAnchor.constraint(equalToSystemSpacingBelow: textField.bottomAnchor, multiplier: 8),
+            buttonLast.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 40),
             buttonLast.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonLast.heightAnchor.constraint(equalToConstant: 50),
             buttonLast.widthAnchor.constraint(equalToConstant: 150)
-
+        
         ])
     }
     
