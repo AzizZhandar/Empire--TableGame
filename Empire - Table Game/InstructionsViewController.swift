@@ -8,11 +8,11 @@
 import UIKit
 
 class InstructionsViewController {
-    
+
         struct Constants {
             static let backgroundAlphaTo: CGFloat = 0.6
         }
-        
+
         private let backgroundView: UIView = {
             let backgroundView = UIView()
             backgroundView.backgroundColor = .black

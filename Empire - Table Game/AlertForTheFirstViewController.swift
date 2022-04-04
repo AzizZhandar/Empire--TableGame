@@ -56,7 +56,7 @@ class AlertForTheFirstViewController: UIViewController {
                                  height: 300)
 
         alertView.backgroundColor = UIColor(patternImage: UIImage(named: "e-7")!)
-        
+
 
         let titleLabel = UILabel(frame: CGRect(x: 0,
                                                y: 0,

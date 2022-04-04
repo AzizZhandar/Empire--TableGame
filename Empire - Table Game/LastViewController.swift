@@ -56,10 +56,10 @@ class LastViewController: UIViewController {
 extension LastViewController {
     
     func styleLastView() {
-        
+
         player.shuffled()
         firstElement = player[0]
-            
+
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         backgroundView.image = UIImage(named: "wave-haikei-2")
         backgroundView.contentMode = .scaleAspectFill
@@ -73,8 +73,8 @@ extension LastViewController {
         label.font = .boldSystemFont(ofSize: 20)
         label.font = UIFont(name: "Avenir Heavy", size: 20)
         playerNumber += 1
-            
-            
+
+
         buttonLastView.translatesAutoresizingMaskIntoConstraints = false
         buttonLastView.backgroundColor = .link
         buttonLastView.layer.cornerRadius = 15

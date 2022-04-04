@@ -64,7 +64,7 @@ class AlertForTheRulesViewController: UIViewController {
         imageView.loadGif(name: gif)
 //        imageView.contentMode = .scaleAspectFill
         alertView.addSubview(imageView)
-        
+
         let button = UIButton(frame: CGRect(x: 0,
                                             y: alertView.frame.size.height-60,
                                             width: alertView.frame.size.width,

@@ -215,7 +215,7 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
     let alertGif = AlertForTheRulesViewController()
 
 // MARK:- Button where would be rules of game
-    
+
     @objc func buttonSF() {
         
 //        let url = Bundle.main.url(forResource: "bensound-ukulele", withExtension: "mp3")
@@ -223,7 +223,7 @@ class FirstViewController: UIViewController, UITextFieldDelegate {
 //        player?.play()
         
         alertGif.showAlert(with: "gifgif", on: self)
-        
+
     }
     
     @objc func dismissAlert() {
