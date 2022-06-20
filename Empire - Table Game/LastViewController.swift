@@ -14,9 +14,9 @@ class LastViewController: UIViewController {
     var players = String()
     var player = [1, 2, 3, 4, 5]
     var firstElement = Int()
-    
+
     var playerAudio: AVAudioPlayer?
-    
+
     let backgroundView = UIImageView()
     let label = UILabel()
     let buttonLastView = UIButton()
@@ -40,40 +40,43 @@ class LastViewController: UIViewController {
         layoutLastView()
         buttonLastView.addTarget(self, action: #selector(didTapButtonLastView), for: .touchUpInside)
     }
-    
-// Кнопка - отвечающая за проговорку всех слов, которые были переданы в textfield
-    @objc private func didTapButtonLastView() {
+
+   @objc private func didTapButtonLastView() {
 
         let rootVC = FirstViewController()
         let navVC = UINavigationController(rootViewController: rootVC)
         navVC.modalPresentationStyle = .fullScreen
         present(navVC, animated: true)
 
+        buttonLastView.addTarget(self,
+                         action: #selector(dismissView),
+                         for: .touchUpInside)
     }
-    
+
+    @objc func dismissView() {
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 extension LastViewController {
-    
+
     func styleLastView() {
 
-        player.shuffled()
+        player.shuffle()
         firstElement = player[0]
 
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.image = UIImage(named: "wave-haikei-2")
+        backgroundView.image = UIImage(named: "lastBackground")
         backgroundView.contentMode = .scaleAspectFill
-            
+
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Игрок №\(firstElement), начинает свой ход"
 //            label.backgroundColor = .systemFill
 //            label.layer.shadowColor = UIColor.orange.cgColor
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: 20)
+        label.font = .systemFont(ofSize: 20)
         label.font = UIFont(name: "Avenir Heavy", size: 20)
-        playerNumber += 1
-
 
         buttonLastView.translatesAutoresizingMaskIntoConstraints = false
         buttonLastView.backgroundColor = .link
@@ -84,15 +87,15 @@ extension LastViewController {
         buttonLastView.titleLabel?.font = UIFont(name: "Avenir Heavy", size: 17)
 
 
-            
+
     }
-    
+
     func layoutLastView() {
-        
+
         view.addSubview(backgroundView)
         view.addSubview(label)
         view.addSubview(buttonLastView)
-        
+
         NSLayoutConstraint.activate([
             backgroundView.topAnchor.constraint(equalTo: view.topAnchor),
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -103,12 +106,12 @@ extension LastViewController {
             label.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 30),
             label.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 10),
             view.safeAreaLayoutGuide.trailingAnchor.constraint(equalToSystemSpacingAfter: label.trailingAnchor, multiplier: 10),
-            
+
             buttonLastView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 40),
             buttonLastView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             buttonLastView.heightAnchor.constraint(equalToConstant: 50),
             buttonLastView.widthAnchor.constraint(equalToConstant: 150)
-        
+
         ])
     }
 }

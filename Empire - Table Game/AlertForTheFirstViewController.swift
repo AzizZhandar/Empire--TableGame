@@ -51,11 +51,11 @@ class AlertForTheFirstViewController: UIViewController {
         
         targetView.addSubview(alertView)
         alertView.frame = CGRect(x: 40,
-                                 y: -300,
+                                 y: 900,
                                  width: targetView.frame.size.width-60,
                                  height: 300)
 
-        alertView.backgroundColor = UIColor(patternImage: UIImage(named: "e-7")!)
+//        alertView.backgroundColor = UIColor(patternImage: UIImage(named: "e-7")!)
 
 
         let titleLabel = UILabel(frame: CGRect(x: 0,
@@ -64,8 +64,7 @@ class AlertForTheFirstViewController: UIViewController {
                                                height: 80))
         titleLabel.text = title
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont(name: "Avenir Heavy", size: 22)
-        titleLabel.textColor = .black
+        titleLabel.font = .boldSystemFont(ofSize: 17)
         alertView.addSubview(titleLabel)
         
         let messageLabel = UILabel(frame: CGRect(x: 20,
@@ -75,8 +74,7 @@ class AlertForTheFirstViewController: UIViewController {
         messageLabel.numberOfLines = 0
         messageLabel.text = message
         messageLabel.textAlignment = .center
-        messageLabel.font = UIFont(name: "Avenir Heavy", size: 17)
-        messageLabel.textColor = .gray
+        messageLabel.font = .systemFont(ofSize: 15)
         alertView.addSubview(messageLabel)
         
         let button = UIButton(frame: CGRect(x: 0,
@@ -84,8 +82,7 @@ class AlertForTheFirstViewController: UIViewController {
                                             width: alertView.frame.size.width,
                                             height: 50))
         button.setTitle("Окей, понятно", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Avenir Heavy", size: 20)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.link, for: .normal)
         button.addTarget(self,
                          action: #selector(dismissAlert),
                          for: .touchUpInside)

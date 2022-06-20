@@ -1,22 +1,20 @@
 //
-//  AlertForTheRulesViewController.swift
+//  TheRulesViewController.swift
 //  Empire - Table Game
 //
-//  Created by Mukhamed-Aziz Zhandar on 25.01.2022.
+//  Created by Aziz Zhandar on 15.06.2022.
 //
 
-import Foundation
 import UIKit
 
-class AlertForTheRulesViewController: UIViewController {
+class TheRulesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
+
     struct Constants {
-        static let backgroundAlphaTo: CGFloat = 0.40
+        static let backgroundAlphaTo: CGFloat = 0.6
     }
     
     private let backgroundView: UIView = {
@@ -36,7 +34,8 @@ class AlertForTheRulesViewController: UIViewController {
 
     private var mytargetView: UIView?
     
-    func showAlert(with gif: String,
+    func showAlert(with title: String,
+                   message: String,
                    on viewController: FirstViewController) {
         guard let targetView = viewController.view else {
             return
@@ -50,30 +49,40 @@ class AlertForTheRulesViewController: UIViewController {
         
         targetView.addSubview(alertView)
         alertView.frame = CGRect(x: 40,
-                                 y: -300,
+                                 y: -900,
                                  width: targetView.frame.size.width-60,
-                                 height: 300)
+                                 height: 650)
 
-        let imageName = ""
-        let image = UIImage(named: imageName)
-        let imageView = UIImageView(image: image)
-        imageView.frame = CGRect(x: 20,
-                                 y: 70,
-                                 width: alertView.frame.size.width-40,
-                                 height: 170)
-        imageView.loadGif(name: gif)
-//        imageView.contentMode = .scaleAspectFill
-        alertView.addSubview(imageView)
+//        alertView.backgroundColor = UIColor(patternImage: UIImage(named: "e-7")!)
 
+
+        let titleLabel = UILabel(frame: CGRect(x: 0,
+                                               y: 0,
+                                               width: alertView.frame.size.width,
+                                               height: 80))
+        titleLabel.text = title
+        titleLabel.textAlignment = .center
+        titleLabel.font = .boldSystemFont(ofSize: 17)
+        alertView.addSubview(titleLabel)
+        
+        let messageLabel = UILabel(frame: CGRect(x: 20,
+                                                 y: 70,
+                                                 width: alertView.frame.size.width-40,
+                                                 height: 520))
+        messageLabel.numberOfLines = 0
+        messageLabel.text = message
+        messageLabel.textAlignment = .center
+        messageLabel.font = .systemFont(ofSize: 15)
+        alertView.addSubview(messageLabel)
+        
         let button = UIButton(frame: CGRect(x: 0,
                                             y: alertView.frame.size.height-60,
                                             width: alertView.frame.size.width,
                                             height: 50))
-        button.setTitle("Домой", for: .normal)
-        button.titleLabel?.font = UIFont(name: "Avenir Heavy", size: 20)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitle("Гуд, гоу начинать", for: .normal)
+        button.setTitleColor(.link, for: .normal)
         button.addTarget(self,
-                         action: #selector(dismissAlert),
+                         action: #selector(dismissAlertTwo),
                          for: .touchUpInside)
         alertView.addSubview(button)
 
@@ -90,7 +99,7 @@ class AlertForTheRulesViewController: UIViewController {
                        })
     }
     
-    @objc func dismissAlert() {
+    @objc func dismissAlertTwo() {
         guard let targetView = mytargetView else {
             return
         }
@@ -118,5 +127,3 @@ class AlertForTheRulesViewController: UIViewController {
     }
 
 }
-
-
